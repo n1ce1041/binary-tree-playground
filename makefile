@@ -1,27 +1,40 @@
-# Makefile to compile the binary tree traversal program
-
 CC = gcc
 CFLAGS = -Wall -g
 
-# Target for the binary_tree executable
-TARGET = binary_tree
+# Directories for object files and executable
+OBJ_DIR = obj
+BIN_DIR = bin
 
-# Sources
-SRCS = binary_tree.c
+# Source files
+SRC = binary_tree.c binary_tree_iterative.c stack.c
+OBJ = $(SRC:.c=.o)
 
-# Object files
-OBJS = $(SRCS:.c=.o)
+# Executables
+EXEC = $(BIN_DIR)/binary_tree
+EXEC_ITERATIVE = $(BIN_DIR)/binary_tree_iterative
 
-# Compile the program
-all: $(TARGET)
+# Create directories if they don't exist
+$(shell mkdir -p $(OBJ_DIR) $(BIN_DIR))
 
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
+# Default target
+all: $(EXEC) $(EXEC_ITERATIVE)
 
-# Compile each .c file into a .o file
-%.o: %.c
-	$(CC) $(CFLAGS) -c $<
+# Rule to build the recursive binary tree program
+$(EXEC): $(OBJ_DIR)/binary_tree.o $(OBJ_DIR)/stack.o
+	$(CC) $(CFLAGS) -o $@ $^
 
-# Clean up object files and executable
+# Rule to build the iterative binary tree program
+$(EXEC_ITERATIVE): $(OBJ_DIR)/binary_tree_iterative.o $(OBJ_DIR)/stack.o
+	$(CC) $(CFLAGS) -o $@ $^
+
+# Rule to compile .c files to .o files
+$(OBJ_DIR)/%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Clean target
 clean:
-	rm -f $(OBJS) $(TARGET)
+	rm -rf $(OBJ_DIR) $(BIN_DIR)
+
+# Phony targets
+.PHONY: all clean
+ 
