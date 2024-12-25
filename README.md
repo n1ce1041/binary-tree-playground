@@ -175,57 +175,7 @@ void postOrderIterative(Node* root) {
 
 ---
 
-### **5. Breadth-First Search (BFS / Level Order Traversal)**
 
-#### **Iterative Implementation Using a Queue**
-
-```c
-#include <stddef.h>
-
-typedef struct Queue {
-    Node* data[STACK_MAX];
-    int front, rear;
-} Queue;
-
-void initQueue(Queue* queue) {
-    queue->front = queue->rear = -1;
-}
-
-bool isQueueEmpty(Queue* queue) {
-    return queue->front == -1;
-}
-
-bool enqueue(Queue* queue, Node* node) {
-    if (queue->rear == STACK_MAX - 1) return false;
-    if (queue->front == -1) queue->front = 0;
-    queue->data[++queue->rear] = node;
-    return true;
-}
-
-Node* dequeue(Queue* queue) {
-    if (isQueueEmpty(queue)) return NULL;
-    Node* node = queue->data[queue->front];
-    if (queue->front >= queue->rear) queue->front = queue->rear = -1;
-    else queue->front++;
-    return node;
-}
-
-void bfs(Node* root) {
-    if (root == NULL) return;
-
-    Queue queue;
-    initQueue(&queue);
-    enqueue(&queue, root);
-
-    while (!isQueueEmpty(&queue)) {
-        Node* current = dequeue(&queue);
-        printf("%d ", current->val); // Visit the node
-
-        if (current->left != NULL) enqueue(&queue, current->left);
-        if (current->right != NULL) enqueue(&queue, current->right);
-    }
-}
-```
 
 ---
 
