@@ -1,7 +1,7 @@
 # binary-tree-playground
 
 
-There are three **depth-first traversal methods** (Pre-order, In-order, Post-order) and **breadth-first traversal (BFS)** implemented in **C**.
+There are three **depth-first traversal methods** (Pre-order, In-order, Post-order) and **breadth-first traversal (BFS)** implemented in **C/C++**. For stack based iterative solutions Cpp is better for the in built stack but we can roll our own in C or use something like GLib for the same effect. Both are tried here though.
 
 We'll also include a basic binary tree setup to make the examples complete.
 
@@ -94,6 +94,56 @@ void preOrderIterative(Node* root) {
     }
 }
 ```
+##### C++ Iterative DFS Pre-Order
+```
+#include <iostream>
+#include <stack>
+
+struct Node {
+    int value;
+    Node *left;
+    Node *right;
+
+    Node(int val) : value(val), left(nullptr), right(nullptr) {}
+};
+
+void preOrderIterative(Node *root) {
+    if (root == nullptr) return;
+
+    std::stack<Node*> stack;
+    stack.push(root);
+
+    while (!stack.empty()) {
+        Node *current = stack.top();
+        stack.pop();
+
+        std::cout << current->value << " ";  // Visit the node
+
+        // Push right first, so left is processed first (because stack is LIFO)
+        if (current->right != nullptr) {
+            stack.push(current->right);
+        }
+        if (current->left != nullptr) {
+            stack.push(current->left);
+        }
+    }
+}
+
+int main() {
+    Node *root = new Node(1);
+    root->left = new Node(2);
+    root->right = new Node(3);
+    root->left->left = new Node(4);
+    root->left->right = new Node(5);
+
+    std::cout << "Pre-order (Iterative): ";
+    preOrderIterative(root);
+    std::cout << std::endl;
+
+    return 0;
+}
+```
+
 
 ---
 
